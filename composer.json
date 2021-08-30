@@ -2,7 +2,8 @@
   "name": "noem/state-machine-module",
   "description": "description",
   "type": "library",
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "license": "MIT",
   "authors": [
     {
@@ -11,7 +12,9 @@
     }
   ],
   "require": {
-    "nette/schema": "^1.2"
+    "nette/schema": "^1.2",
+    "noem/state-machine": "dev-master",
+    "noem/state-machine-loader": "dev-master"
   },
   "require-dev": {
     "composer/composer": "^2.0",
