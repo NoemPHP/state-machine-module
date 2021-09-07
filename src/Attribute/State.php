@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace Noem\StateMachineModule\Attribute;
-
 
 use Attribute;
 use Nette\Schema\Expect;
@@ -19,6 +17,7 @@ use Nette\Schema\Processor;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_FUNCTION)]
 class State
 {
+
     private array $props;
 
     /**
@@ -26,15 +25,16 @@ class State
     public function __construct(...$props)
     {
         $props = array_merge([
-                                 'parent' => null,
-                                 'machine' => 'default',
-                             ], $props);
+            'parent' => null,
+            'machine' => 'default',
+            'parallel' => false,
+        ], $props);
         $schema = Expect::structure([
-                                        'machine' => Expect::string()->required(),
-                                        'name' => Expect::string()->required(),
-                                        'parent' => Expect::string()->nullable(),
-                                        'parallel' => Expect::bool(),
-                                    ]);
+            'machine' => Expect::string()->required(),
+            'name' => Expect::string()->required(),
+            'parent' => Expect::string()->nullable(),
+            'parallel' => Expect::bool(),
+        ]);
         $processor = new Processor();
         $processor->process($schema, $props);
         $this->props = $props;
@@ -51,6 +51,7 @@ class State
                 )
             );
         }
+
         return $this->props[$key];
     }
 

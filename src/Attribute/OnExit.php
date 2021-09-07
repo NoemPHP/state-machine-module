@@ -18,9 +18,6 @@ class OnExit
 {
     private array $props;
 
-    /**
-     * @param array{foo:string} ...$props
-     */
     public function __construct(...$props)
     {
         $props = array_merge([

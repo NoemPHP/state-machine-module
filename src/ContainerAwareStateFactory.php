@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Noem\StateMachineModule;
 
-
 use Noem\Container\Container;
 use Noem\State\State\HierarchicalState;
 use Noem\State\State\ParallelState;
@@ -13,9 +12,11 @@ use Noem\StateMachineModule\Attribute\State;
 
 class ContainerAwareStateFactory
 {
+
     /**
      * @param Container $container
      * @param string|null $parent
+     *
      * @return StateInterface[]
      */
     public static function createChildrenOf(Container $container, string $machine, ?string $parent = null): array
@@ -23,7 +24,7 @@ class ContainerAwareStateFactory
         $result = [];
         $withAttribute = $container->getIdsWithAttribute(
             State::class,
-            fn(State $s) => $s->parent === $parent && $s->machine === $machine
+            fn(State $s) => (!$parent || $s->parent === $parent) && $s->machine === $machine
         );
         array_walk(
             $withAttribute,
@@ -34,6 +35,7 @@ class ContainerAwareStateFactory
                 $result[$stateAttr->name] = self::createStateFromAttribute($container, $stateAttr);
             }
         );
+
         return $result;
     }
 
@@ -55,6 +57,7 @@ class ContainerAwareStateFactory
             ? new ParallelState($id, null, ...$children)
             : new HierarchicalState($id, null, ...$children);
         array_walk($children, fn(HierarchicalState $c) => $c->setParent($state));
+
         return $state;
     }
 }
